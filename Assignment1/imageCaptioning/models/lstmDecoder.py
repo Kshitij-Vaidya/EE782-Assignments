@@ -1,0 +1,73 @@
+import torch
+import torch.nn as nn
+from config import getCustomLogger
+
+LOGGER = getCustomLogger("LSTM Decoder")
+
+class LSTMDecoder(nn.Module):
+    '''
+    LSTM Caption Decoder
+    Projects CNN feature to init hidden feature
+    '''
+    def __init__(self,
+                 vocabSize: int,
+                 embedDimension: int = 3,
+                 hiddenDimension: int = 512,
+                 numLayers: int = 1,
+                 paddingIndex: int = 0) -> None:
+        super().__init__()
+
+        self.embedding = nn.Embedding(vocabSize, 
+                                      embedDimension, 
+                                      padding_idx=paddingIndex)
+        self.LSTM = nn.LSTM(embedDimension, 
+                            hiddenDimension,
+                            numLayers,
+                            batch_first=True)
+        self.fc = nn.Linear(hiddenDimension, vocabSize)
+
+        self.initH = nn.Linear(hiddenDimension, hiddenDimension)
+        self.initC = nn.Linear(hiddenDimension, hiddenDimension)
+
+        LOGGER.info(f"Initialised LSTM Decoder with Vocabulary={vocabSize}, "
+                    f"Embedding Dimension = {embedDimension}, Hidden Dimensions = {hiddenDimension}, Layers = {numLayers}")
+    
+    def forward(self, features: torch.Tensor,
+                captions: torch.Tensor) -> torch.Tensor:
+        """
+        Teacher Forcing Mode
+        Arguments:
+            features: (B, hiddenDimension) : initialised hidden tokens
+            captions: (B, L): input sequence of tokens
+        """
+        embeddings = self.embedding(captions)
+        H0 = torch.tanh(self.initH(features)).unsqueeze(0) # (1, B, H)
+        C0 = torch.tanh(self.initC(features)).unsqueeze(0) # (1, B, H)
+
+        outputs, _ = self.LSTM(embeddings, (H0, C0))
+        return self.fc(outputs) # Output Size : (B, L, vocabSize)
+
+    def generate(self, features: torch.Tensor,
+                 maxLength: int = 24,
+                 BOSIndex: int = 1,
+                 EOSIndex: int = 2) -> torch.Tensor:
+        """
+        Greedy Decoding
+        """
+        H, C = torch.tanh(self.initH(features)).unsqueeze(0), torch.tanh(self.initH(features)).unsqueeze(0)
+        inputs = torch.Tensor([BOSIndex],
+                              device=features.device).unsqueeze(0)
+        embeddings = self.embedding(inputs)
+        outputs = []
+
+        for _ in range(maxLength):
+            output, (H, C) = self.LSTM(embeddings, (H, C))
+            logits = self.fc(output[:, -1, :]) # Last token 
+            predicted = torch.argmax(logits, dim=-1)
+            outputs.append(predicted.item())
+            if predicted.item() == EOSIndex:
+                break
+            embeddings = self.embedding(predicted.unsqueeze(0))
+        
+        return outputs
+

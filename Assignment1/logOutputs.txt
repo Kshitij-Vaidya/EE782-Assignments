@@ -1,0 +1,53 @@
+SAVING TRAIN IMAGES
+
+(3.11.0) (base) kshitijvaidya@Kshitijs-MacBook-Pro-2 data % python prepareFromCSV.py --csv /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/train.csv --output ../rsicdDataset --split train
+[23:50:38] INFO:DataPrepare: Reading RSICD CSV from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/train.csv ...
+[23:50:38] WARNING:DataPrepare: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x101144c10>)
+[23:50:59] INFO:DataPrepare: Saved 8734 images : ../rsicdDataset/images/train
+[23:50:59] INFO:DataPrepare: Saved Metadata : ../rsicdDataset/trainAnnotations.json
+
+SAVING TEST IMAGES
+
+(3.11.0) (base) kshitijvaidya@Kshitijs-MacBook-Pro-2 data % python prepareFromCSV.py --csv /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/test.csv --output ../rsicdDataset --split test 
+[23:52:01] INFO:DataPrepare: Reading RSICD CSV from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/test.csv ...
+[23:52:01] WARNING:DataPrepare: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x100c68c10>)
+[23:52:04] INFO:DataPrepare: Saved 1093 images : ../rsicdDataset/images/test
+[23:52:04] INFO:DataPrepare: Saved Metadata : ../rsicdDataset/testAnnotations.json
+
+SAVING VALID IMAGES
+
+(3.11.0) (base) kshitijvaidya@Kshitijs-MacBook-Pro-2 data % python prepareFromCSV.py --csv /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/valid.csv --output ../rsicdDataset --split valid 
+[23:52:43] INFO:DataPrepare: Reading RSICD CSV from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/valid.csv ...
+[23:52:43] WARNING:DataPrepare: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x10496cc10>)
+[23:52:46] INFO:DataPrepare: Saved 1094 images : ../rsicdDataset/images/valid
+[23:52:46] INFO:DataPrepare: Saved Metadata : ../rsicdDataset/validAnnotations.json
+
+COMBINED LOG OUTPUTS AFTER CODE CHANGES
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 imageCaptioning % python -m data.prepareFromCSV --csv rsicdDataset/train.csv --split train
+[12:56:41] INFO:Preprocessing: Reading RSICD CSV from rsicdDataset/train.csv ...
+[12:56:41] WARNING:Preprocessing: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x104c0e860>)
+[12:57:02] INFO:Preprocessing: Saved 8734 images : ./rsicdDataset/images/train
+[12:57:02] INFO:Preprocessing: Saved Metadata : ./rsicdDataset/trainAnnotations.json
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 imageCaptioning % python -m data.prepareFromCSV --csv rsicdDataset/valid.csv --split valid
+[12:57:46] INFO:Preprocessing: Reading RSICD CSV from rsicdDataset/valid.csv ...
+[12:57:46] WARNING:Preprocessing: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x105426860>)
+[12:57:49] INFO:Preprocessing: Saved 1094 images : ./rsicdDataset/images/valid
+[12:57:49] INFO:Preprocessing: Saved Metadata : ./rsicdDataset/validAnnotations.json
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 imageCaptioning % python -m data.prepareFromCSV --csv rsicdDataset/test.csv --split test
+[12:58:06] INFO:Preprocessing: Reading RSICD CSV from rsicdDataset/test.csv ...
+[12:58:06] WARNING:Preprocessing: Row 0: Failed to parse image bytes (malformed node or string on line 1: <ast.Name object at 0x1045b6860>)
+[12:58:09] INFO:Preprocessing: Saved 1093 images : ./rsicdDataset/images/test
+[12:58:09] INFO:Preprocessing: Saved Metadata : ./rsicdDataset/testAnnotations.json
+
+
+RUNNING PREPROCESS TO BUILD VOCAB.json
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 imageCaptioning % python -m data.preprocess
+[20:04:13] INFO:Preprocessing: Building Vocabulary from Training Annotations
+[20:04:13] INFO:Preprocessing: Built Vocabulary: Size=1170, Minimum Frequency=5, Maximum Size=10000, Unique Tokens=3068
+[20:04:13] INFO:Preprocessing: Saved vocabulary to ./preprocessingOutput/vocab.json (Size = 1170)
+[20:04:13] INFO:Preprocessing: Computing training and validation statistics
+[20:04:13] INFO:Preprocessing: [train] Vocabulary Coverage : 96.94
+[20:04:13] INFO:Preprocessing: [valid] Vocabulary Coverage : 95.46
+[20:04:13] INFO:Preprocessing: Saved token statistics CSV
