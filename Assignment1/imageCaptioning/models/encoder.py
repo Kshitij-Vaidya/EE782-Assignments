@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from config import getCustomLogger
+from imageCaptioning.config import getCustomLogger
 
 LOGGER = getCustomLogger("Encoder")
 

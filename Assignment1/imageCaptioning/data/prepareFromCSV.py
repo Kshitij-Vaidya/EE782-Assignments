@@ -6,7 +6,8 @@ import os
 import json
 import argparse
 import re
-from config import DATA_ROOT, LOGGER
+
+from imageCaptioning.config import DATA_ROOT, LOGGER
 
 def prepareFromCSV(csvPath : str, split : str, outputDirectory : str = DATA_ROOT):
     """

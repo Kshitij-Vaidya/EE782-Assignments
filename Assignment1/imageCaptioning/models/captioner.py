@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
-from models.encoder import CNNEncoder
-from models.lstmDecoder import LSTMDecoder
-from models.transformerDecoder import TransformerDecoder
-from config import getCustomLogger
+from imageCaptioning.models.encoder import CNNEncoder
+from imageCaptioning.models.lstmDecoder import LSTMDecoder
+from imageCaptioning.models.transformerDecoder import TransformerDecoder
+from imageCaptioning.config import getCustomLogger
 
 LOGGER = getCustomLogger("Captioner")
 

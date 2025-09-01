@@ -1,7 +1,8 @@
 from typing import Dict, List, Tuple
 import json
 from collections import Counter
-from config import tokenize, LOGGER
+
+from imageCaptioning.config import LOGGER
 
 
 class Vocabulary:
@@ -35,7 +36,7 @@ class Vocabulary:
         tokens.extend(mostCommon)
 
         self.STOI = {token : index for index, token in enumerate(tokens)}
-        self.ITOS = {index : token for index, token in self.STOI.items()}
+        self.ITOS = {index : token for token, index in self.STOI.items()}
 
         LOGGER.info(
             f"Built Vocabulary: Size={len(self)}, "
@@ -94,8 +95,10 @@ class Vocabulary:
     def load(cls, path : str) -> "Vocabulary":
         with open(path, "r") as file:
             object: Dict[str, int] = json.load(file)
-        vocabulary = cls(minFreq=object.get("MinFrequency", 1),
-                         maxSize=object.get("maxSize", 10000))
+        dummyCounter = Counter()
+        vocabulary = cls(counter=dummyCounter,
+                         minFrequency=object.get("MinFrequency", 1),
+                         maxSize=object.get("MaxSize", 10000))
         vocabulary.STOI = object.get("STOI")
         vocabulary.ITOS = object.get("ITOS")
         return vocabulary

@@ -1,11 +1,12 @@
 import os
 import json
-from typing import Optional, Callable
-from data.vocabulary import Vocabulary
+from typing import Optional
 from PIL import Image
+import torch
 from torch.utils.data import Dataset
-from torch import Tensor
 from torchvision import transforms
+
+from imageCaptioning.data.vocabulary import Vocabulary
 
 class RSICDDataset(Dataset):
     def __init__(self, root : str, 
@@ -46,7 +47,8 @@ class RSICDDataset(Dataset):
         # Use the first caption
         caption = annotation["captions"][0]
         if self.vocabulary:
-            tokens = self.vocabulary.encode(caption, max_len = self.maxLength)
+            tokenIds, _ = self.vocabulary.encode(caption, maxLength = self.maxLength)
+            tokens = torch.tensor(tokenIds, dtype = torch.long)
         else:
             tokens = caption
         return image, tokens

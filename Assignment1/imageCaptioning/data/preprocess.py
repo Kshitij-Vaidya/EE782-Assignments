@@ -3,11 +3,13 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np 
 import pandas as pd 
-from data.dataset import RSICDDataset
-from data.vocabulary import Vocabulary
-from config import DATA_ROOT, LOGGER, OUTPUT_DIRECTORY, tokenize
-
 from torchvision import transforms
+
+from imageCaptioning.data.dataset import RSICDDataset
+from imageCaptioning.data.vocabulary import Vocabulary
+from imageCaptioning.config import DATA_ROOT, LOGGER, OUTPUT_DIRECTORY
+
+
 
 def getTransforms():
     return transforms.Compose([
