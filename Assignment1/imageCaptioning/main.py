@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader
 import argparse
 
 # Import project modules
-from imageCaptioning.config import getCustomLogger, DATA_ROOT, OUTPUT_DIRECTORY, DEVICE
+from imageCaptioning.config import getCustomLogger, DATA_ROOT, OUTPUT_DIRECTORY, DEVICE, CHECKPOINT_PATH
 from imageCaptioning.data.dataset import RSICDDataset
 from imageCaptioning.data.vocabulary import Vocabulary
 from imageCaptioning.data.preprocess import getTransforms
@@ -79,18 +79,16 @@ def main():
     parser.add_argument("--lr-transformer", type=float, default=2e-5, help="Learning rate for transformer")
     parser.add_argument("--model-type", type=str, default="lstm", choices=["lstm", "transformer"], 
                        help="Type of decoder to use")
-    parser.add_argument("--encoder-name", type=str, default="resnet18", 
+    parser.add_argument("--encoder-name", type=str, default="resnet18", choices=["resnet18", "mobilenet"],
                        help="CNN encoder architecture")
     parser.add_argument("--max-length", type=int, default=24, help="Maximum caption length")
-    parser.add_argument("--checkpoint-dir", type=str, default="./checkpoints", 
-                       help="Directory to save checkpoints")
     parser.add_argument("--finetune", action="store_true", help="Fine-tune the encoder")
     parser.add_argument("--num-workers", type=int, default=4, help="Number of data loader workers")
     
     args = parser.parse_args()
     
     # Create checkpoint directory
-    os.makedirs(args.checkpoint_dir, exist_ok=True)
+    os.makedirs(CHECKPOINT_PATH, exist_ok=True)
     
     LOGGER.info("Starting Image Captioning Training on RSICD Dataset")
     LOGGER.info(f"Device: {DEVICE}")
@@ -130,7 +128,7 @@ def main():
     LOGGER.info(f"Trainable parameters: {trainableParams:,}")
     
     # Define checkpoint path
-    checkpointPath = os.path.join(args.checkpoint_dir, f"model_{args.model_type}_{args.encoder_name}.pt")
+    checkpointPath = os.path.join(CHECKPOINT_PATH, f"model_{args.model_type}_{args.encoder_name}.pt")
     
     # Get padding index from vocabulary
     paddingIndex = vocabulary.STOI.get(vocabulary.padToken, 0)
@@ -145,7 +143,8 @@ def main():
         epochs=args.epochs,
         lrCNN=args.lr_cnn,
         lrDecoder=args.lr_decoder,
-        lrTransformer=args.lr_transformer
+        lrTransformer=args.lr_transformer,
+        checkpointPath=checkpointPath
     )
     
     LOGGER.info("Training completed!")

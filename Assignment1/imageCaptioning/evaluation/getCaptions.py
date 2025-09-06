@@ -1,7 +1,9 @@
 import json
 import os
 from typing import List, Tuple, Dict
-from imageCaptioning.config import (DATA_ROOT, getCustomLogger,
+import argparse
+
+from imageCaptioning.config import (getCustomLogger,
                                     OUTPUT_DIRECTORY)
 
 LOGGER = getCustomLogger("Caption Decoding")
@@ -30,9 +32,13 @@ def tokenToCaption(tokens : List[int],
 
 
 if __name__ == "__main__":
-    decodedJsonPath = os.path.join(OUTPUT_DIRECTORY, "decodedTest.json")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model-type", type=str, default="transformer", choices=["lstm", "transformer"])
+    args = parser.parse_args()
+
+    decodedJsonPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTest.json")
     vocabJsonPath = os.path.join(OUTPUT_DIRECTORY, "vocab.json")
-    outputCaptionPath = os.path.join(OUTPUT_DIRECTORY, "decodedTestCaptions.json")
+    outputCaptionPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTestCaptions.json")
 
     # Load the decoded tokens
     with open(decodedJsonPath, "r") as file:

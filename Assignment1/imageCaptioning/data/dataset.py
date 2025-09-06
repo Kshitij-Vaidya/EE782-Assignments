@@ -1,7 +1,8 @@
 import os
 import json
-from typing import Optional
+from typing import Optional, List
 from PIL import Image
+from pathlib import Path
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
@@ -52,3 +53,19 @@ class RSICDDataset(Dataset):
         else:
             tokens = caption
         return image, tokens
+    
+    def getImagePaths(self) -> List[str]:
+        """
+        Returns list of all image file paths in the dataset
+        """
+        return [os.path.join(self.imageDirectory, annotation["filename"])
+                for annotation in self.annotations]
+    
+    def loadImage(self, imagePath: Path) -> Image:
+        """
+        Loads and transforms an image from the given Path object
+        """
+        image = Image.open(str(imagePath)).convert("RGB")
+        if self.transform:
+            image = self.transform(image)
+        return image

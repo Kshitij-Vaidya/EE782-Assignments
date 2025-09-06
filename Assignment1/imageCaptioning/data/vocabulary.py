@@ -95,13 +95,17 @@ class Vocabulary:
     def load(cls, path : str) -> "Vocabulary":
         with open(path, "r") as file:
             object: Dict[str, int] = json.load(file)
-        dummyCounter = Counter()
-        vocabulary = cls(counter=dummyCounter,
-                         minFrequency=object.get("MinFrequency", 1),
-                         maxSize=object.get("MaxSize", 10000))
+        vocabulary = cls.__new__(cls)
+        vocabulary.minFrequency = object.get("MinFrequency", 1)
+        vocabulary.maxSize = object.get("MaxSize", 10000)
+        vocabulary.padToken = "<pad>"
+        vocabulary.eosToken = "<eos>"
+        vocabulary.bosToken = "<bos>"
         vocabulary.STOI = object.get("STOI")
         vocabulary.ITOS = object.get("ITOS")
+        vocabulary.frequencies = Counter()
         return vocabulary
+
     
 
 

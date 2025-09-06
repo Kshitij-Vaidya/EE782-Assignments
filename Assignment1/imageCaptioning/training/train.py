@@ -66,6 +66,7 @@ def trainModel(model: nn.Module,
                trainLoader: DataLoader,
                valLoader: DataLoader,
                paddingIndex: int,
+               checkpointPath: str,
                epochs: int = 50,
                lrCNN: float = 1e-4,
                lrDecoder: float = 2e-4,
@@ -95,4 +96,4 @@ def trainModel(model: nn.Module,
                 "modelState" : model.state_dict(),
                 "optimizerState" : optimizer.state_dict(),
                 "validationLoss" : validationLoss
-            }, os.path.join(CHECKPOINT_PATH, "model_transformer.pt"))
+            }, os.path.join(CHECKPOINT_PATH, checkpointPath))

@@ -7,7 +7,8 @@ from torchvision import transforms
 
 from imageCaptioning.data.dataset import RSICDDataset
 from imageCaptioning.data.vocabulary import Vocabulary
-from imageCaptioning.config import DATA_ROOT, LOGGER, OUTPUT_DIRECTORY
+from imageCaptioning.config import (DATA_ROOT, LOGGER, 
+                                    OUTPUT_DIRECTORY, tokenize)
 
 
 
@@ -20,14 +21,14 @@ def getTransforms():
                              std=[0.229, 0.224, 0.225])
     ])
 
-def buildVocabFromTrain(minFrequency: int = 5,
+def buildVocabFromTrain(minFrequency: int = 3,
                         maxSize: int = 10000) -> Vocabulary:
     trainDataset = RSICDDataset(root=DATA_ROOT, split="train")
     counter = Counter()
     LOGGER.debug(f"Sample annotation : {trainDataset.annotations[0]['captions']}")
     for annotation in trainDataset.annotations:
         for caption in annotation["captions"]:
-            counter.update(caption.lower().split())
+            counter.update(tokenize(caption))
     
     for i, (word, freq) in enumerate(counter.most_common(20)):
         LOGGER.debug(f"Word {i}: {word}, freq={freq}")
@@ -54,10 +55,11 @@ def computeStatistics(vocabulary: Vocabulary,
 
     for annotation in dataset.annotations:
         for caption in annotation["captions"]:
+            tokens = tokenize(caption)
             _, rawLength = vocabulary.encode(caption, maxLength=maxLength)
             lengths.append(rawLength)
-            totalCount += len(caption.split())
-            OOVCount += sum(1 for word in caption.split() if word not in vocabulary.STOI)
+            totalCount += len(tokens)
+            OOVCount += sum(1 for word in tokens if word not in vocabulary.STOI)
     
     coverage = 100 * (1 - OOVCount / totalCount)
     LOGGER.info(f"[{split}] Vocabulary Coverage : {coverage:.2f}")

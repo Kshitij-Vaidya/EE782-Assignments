@@ -3,6 +3,7 @@ import os
 from typing import List, Dict, Union
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
+import argparse
 
 from imageCaptioning.config import getCustomLogger, DATA_ROOT, OUTPUT_DIRECTORY
 
@@ -24,9 +25,9 @@ def computeBLEU4(predictions : list[str],
     return sum(scores) / len(scores)
 
 def computeMeteor(predictions : List[str],
-                  references : List[List[str]]) -> float:
+                  references : List[List[List[str]]]) -> float:
     scores = [
-        meteor_score([reference], 
+        meteor_score(reference, 
                      prediction.split())
         for prediction, reference in zip(predictions, references)
     ]
@@ -34,7 +35,11 @@ def computeMeteor(predictions : List[str],
 
 
 if __name__ == "__main__":
-    decodedCaptionPath = os.path.join(OUTPUT_DIRECTORY, "decodedTestCaptions.json")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model-type", type=str, default="transformer", choices=["lstm", "transformer"])
+    args = parser.parse_args()
+
+    decodedCaptionPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTestCaptions.json")
     testAnnotationPath = os.path.join(DATA_ROOT, "testAnnotations.json")
 
     decodedCaptions = loadJson(path=decodedCaptionPath)
@@ -65,9 +70,9 @@ if __name__ == "__main__":
 
     # For the BLEU-4 and METEOR, use all references for each image
     BLEU4 = computeBLEU4(predictions=predictions,
-                         references=[reference[0] for reference in references])
+                         references=[reference for reference in references])
     METEOR = computeMeteor(predictions=predictions,
-                           references=[reference[0] for reference in references])
+                           references=[reference for reference in references])
     
     LOGGER.info(f"BLEU-4 : {BLEU4:.4f}")
     LOGGER.info(f"METEOR : {METEOR:.4f}")

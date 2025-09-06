@@ -1,7 +1,10 @@
+import os
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from imageCaptioning.config import getCustomLogger
+from typing import List, Dict
+from imageCaptioning.config import getCustomLogger, DEVICE, OUTPUT_DIRECTORY
+from imageCaptioning.data.dataset import RSICDDataset
 
 LOGGER = getCustomLogger("Encoder")
 
@@ -12,7 +15,8 @@ class CNNEncoder(nn.Module):
     '''
     def __init__(self, modelName: str = 'resnet18',
                  pretrained: bool = True,
-                 finetune: bool = False,
+                 finetune: bool = True,
+                 numLayers: int = 2,
                  outputDim: int = 512) -> None:
         super().__init__()
 
@@ -35,8 +39,10 @@ class CNNEncoder(nn.Module):
         # Projection into a Common Dimension
         self.projection = nn.Linear(featureDim, outputDim)
         # Define the finetuning policy
-        for param in self.CNN.parameters():
-            param.requires_grad = finetune
+        parameters = list(self.CNN.children())
+        for layer in parameters[-numLayers:]:
+            for param in layer.parameters():
+                param.requires_grad = finetune
         LOGGER.info(f"Initialized CNN Encoder with {modelName},"
                     f"Finetune = {finetune}, Output Dimensions = {outputDim}")
     
@@ -45,3 +51,30 @@ class CNNEncoder(nn.Module):
         features = self.CNN(x)
         pooledOutput = self.pool(features).squeeze(-1).squeeze(-1)
         return self.projection(pooledOutput)
+    
+    def cacheFeatures(self, imagePaths : List[str],
+                      dataset: RSICDDataset,
+                      batchSize: int = 32,
+                      savePath: str = "featureCache.pt") -> None:
+        self.eval()
+        featureDict = {}
+        with torch.no_grad():
+            for i in range(0, len(imagePaths), batchSize):
+                batchPaths = imagePaths[i : i + batchSize]
+                batchImages = [dataset.loadImage(path).to(DEVICE)
+                               for path in batchPaths]
+                batchTensors = torch.stack(batchImages)
+                batchFeatures = self.forward(batchTensors).cpu()
+
+                for imagePath, features in zip(batchPaths, batchFeatures):
+                    featureDict[imagePath] = features
+        savePath = os.path.join(OUTPUT_DIRECTORY, savePath)
+        torch.save(featureDict, savePath)
+        LOGGER.info(f"Cached features for {len(featureDict)} images to {savePath}")
+    
+    @staticmethod
+    def loadCachedFeatures(loadPath) -> Dict:
+        """
+        Load the cached features from a .pt file
+        """
+        return torch.load(loadPath)

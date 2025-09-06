@@ -12,10 +12,11 @@ class LSTMDecoder(nn.Module):
     '''
     def __init__(self,
                  vocabSize: int,
-                 embedDimension: int = 3,
+                 embedDimension: int = 256,
                  hiddenDimension: int = 512,
-                 numLayers: int = 3,
-                 paddingIndex: int = 0) -> None:
+                 numLayers: int = 2,
+                 paddingIndex: int = 0,
+                 dropout: float = 0.5) -> None:
         super().__init__()
         self.numLayers = numLayers
         self.embedding = nn.Embedding(vocabSize, 
@@ -24,6 +25,7 @@ class LSTMDecoder(nn.Module):
         self.LSTM = nn.LSTM(embedDimension, 
                             hiddenDimension,
                             numLayers,
+                            dropout=dropout,
                             batch_first=True)
         self.fc = nn.Linear(hiddenDimension, vocabSize)
 
@@ -78,8 +80,8 @@ class LSTMDecoder(nn.Module):
                       BOSIndex: int = 1,
                       EOSIndex: int = 2) -> List[List[int]]:
         batchSize = features.size(0)
-        H = torch.tanh(self.initH(features)).unsqueeze(0)
-        C = torch.tanh(self.initC(features)).unsqueeze(0)
+        H = torch.tanh(self.initH(features)).unsqueeze(0).repeat(self.numLayers, 1, 1)
+        C = torch.tanh(self.initC(features)).unsqueeze(0).repeat(self.numLayers, 1, 1)
         inputs = torch.full((batchSize, 1), BOSIndex,
                             dtype=torch.long,
                             device=DEVICE)

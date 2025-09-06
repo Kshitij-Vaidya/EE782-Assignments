@@ -14,7 +14,7 @@ class Captioner(nn.Module):
     def __init__(self, vocabSize: int,
                  modelType: str = "lstm",
                  encoderName: str = "resnet18",
-                 finetune: bool = False) -> None:
+                 finetune: bool = True) -> None:
         super().__init__()
 
         self.encoder = CNNEncoder(modelName=encoderName,
