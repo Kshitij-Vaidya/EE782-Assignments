@@ -3,11 +3,12 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import os
+import time
 
 from imageCaptioning.training.lossFunction import getLossFunction
 from imageCaptioning.training.optimizer import buildOptimizer, buildScheduler
 from imageCaptioning.training.utils import saveCheckpoint
-from imageCaptioning.config import getCustomLogger, DEVICE, CHECKPOINT_PATH
+from imageCaptioning.config import getCustomLogger, DEVICE, CHECKPOINT_PATH, getMemoryMB
 
 LOGGER = getCustomLogger("Train")
 
@@ -80,6 +81,9 @@ def trainModel(model: nn.Module,
 
     bestValidationLoss = float("inf")
 
+    startTime = time.time()
+    startMemory = getMemoryMB()
+
     for epoch in range(1, epochs + 1):
         trainingLoss = trainEpoch(model, trainLoader, criterion, optimizer, epoch)
         validationLoss = validate(model, valLoader, criterion, epoch)
@@ -97,3 +101,9 @@ def trainModel(model: nn.Module,
                 "optimizerState" : optimizer.state_dict(),
                 "validationLoss" : validationLoss
             }, os.path.join(CHECKPOINT_PATH, checkpointPath))
+    
+    endTime = time.time()
+    endMemory = getMemoryMB()
+    LOGGER.info(f"Training Time : {endTime - startTime:.2f} seconds")
+    LOGGER.info(f"Memory Usage Increase: {endMemory - startMemory:.2f}MB")
+    LOGGER.info(f"Peak Memory Usage at End: {endMemory:.2f}MB")

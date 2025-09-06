@@ -1,6 +1,7 @@
 import os
 import logging
 import re
+import psutil
 from typing import List
 
 # Define the Logging Configuration
@@ -24,6 +25,9 @@ CHECKPOINT_PATH = os.path.join(PROJECT_ROOT, "checkpoints")
 def tokenize(text : str) -> List[str]:
     return re.findall(r'\w+', text.lower())
 
-# Device Details for the Torch Modules and Training
+# Device and Utility Details for the Torch Modules and Training
 DEVICE = "cpu"
 
+def getMemoryMB():
+    process = psutil.Process(os.getpid())
+    return process.memory_info().rss / (1024 ** 2)

@@ -64,6 +64,7 @@ def greedyDecodeTransformer(model : Captioner,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Decoding Script using Checkpointed Model")
     parser.add_argument("--model-type", type=str, default="transformer", choices=["lstm", "transformer"])
+    parser.add_argument("--encoder-name", type=str, default="resnet18", choices=["resnet18", "mobilenet"])
     args = parser.parse_args()
     preprocessTransforms: transforms = getTransforms()
 
@@ -80,14 +81,15 @@ if __name__ == "__main__":
     imageTensor = torch.stack(images).to(DEVICE)
 
     # Load the Checkpoint Model
-    checkpoint = torch.load(os.path.join(CHECKPOINT_PATH, f"model_{args.model_type}_resnet18.pt"),
+    checkpoint = torch.load(os.path.join(CHECKPOINT_PATH, f"model_{args.model_type}_{args.encoder_name}.pt"),
                             map_location=DEVICE)
     vocabPath = os.path.join(OUTPUT_DIRECTORY, "vocab.json")
     LOGGER.info(f"Loaded Vocaulary from path {vocabPath}")
     vocabulary = Vocabulary.load(vocabPath) 
     vocabSize = len(vocabulary)
     model = Captioner(vocabSize=vocabSize,
-                      modelType=args.model_type)
+                      modelType=args.model_type,
+                      encoderName=args.encoder_name)
     model.load_state_dict(checkpoint["modelState"])
     model = model.to(DEVICE)
     model.eval()
@@ -96,7 +98,7 @@ if __name__ == "__main__":
     decoded = greedyDecodeLSTM(model,
                                imageTensor)
     LOGGER.info("Decoded Captions (Token Indices)")
-    outputPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTest.json")
+    outputPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}_{args.encoder_name}_DecodedTest.json")
     with open(outputPath, "w") as file:
         json.dump({
             "imageFiles" : imageFiles,

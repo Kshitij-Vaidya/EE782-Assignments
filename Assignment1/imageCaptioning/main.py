@@ -1,9 +1,10 @@
 import os
 from torch.utils.data import DataLoader
 import argparse
-
+import time
 # Import project modules
-from imageCaptioning.config import getCustomLogger, DATA_ROOT, OUTPUT_DIRECTORY, DEVICE, CHECKPOINT_PATH
+from imageCaptioning.config import (DATA_ROOT, OUTPUT_DIRECTORY, DEVICE, CHECKPOINT_PATH,
+                                    getCustomLogger)
 from imageCaptioning.data.dataset import RSICDDataset
 from imageCaptioning.data.vocabulary import Vocabulary
 from imageCaptioning.data.preprocess import getTransforms
@@ -135,6 +136,7 @@ def main():
     
     # Train the model
     LOGGER.info("Starting training...")
+
     trainModel(
         model=model,
         trainLoader=trainLoader,

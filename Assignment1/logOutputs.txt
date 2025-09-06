@@ -298,3 +298,119 @@ Epoch 20 [Valid]: 100%|███████████████████
 [18:45:12] INFO:Train: Epoch 20: Train Loss = 0.5039, Validation Loss = 3.2313
 [18:45:12] INFO:Main: Training completed!
 [18:45:12] INFO:Main: Best model saved to: ./imageCaptioning/checkpoints/model_transformer_resnet18.pt
+
+
+
+MOBILENET LSTM MODEL TRAINING (PARTIAL >10 EPOCHS)
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.main --model-type lstm --epochs 20 --finetune --encoder-name mobilenet
+[11:40:15] INFO:Main: Starting Image Captioning Training on RSICD Dataset
+[11:40:15] INFO:Main: Device: cpu
+[11:40:15] INFO:Main: Model Type: lstm
+[11:40:15] INFO:Main: Encoder: mobilenet
+[11:40:15] INFO:Main: Fine-tune Encoder: True
+[11:40:15] INFO:Main: Batch Size: 32
+[11:40:15] INFO:Main: Epochs: 20
+[11:40:15] INFO:Main: Loading vocabulary from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/vocab.json
+[11:40:15] INFO:Main: Loaded vocabulary with 2701 tokens
+[11:40:15] INFO:Main: Training dataset size: 8734
+[11:40:15] INFO:Main: Validation dataset size: 1094
+Downloading: "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth" to /Users/kshitijvaidya/.cache/torch/hub/checkpoints/mobilenet_v2-b0353104.pth
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 13.6M/13.6M [00:04<00:00, 3.29MB/s]
+[11:40:26] INFO:Encoder: Initialized CNN Encoder with mobilenet,Finetune = True, Output Dimensions = 512
+[11:40:26] INFO:LSTM Decoder: Initialised LSTM Decoder with Vocabulary=2701, Embedding Dimension = 256, Hidden Dimensions = 512, Layers = 2
+[11:40:26] INFO:Captioner: Initialized Captioner with Encoder = mobilenet and Decoder = lstm
+[11:40:26] INFO:Main: Total parameters: 9,160,333
+[11:40:26] INFO:Main: Trainable parameters: 9,160,333
+[11:40:26] INFO:Main: Starting training...
+[11:40:26] INFO:Loss Function: Initialised CrossEntropyLoss with ignore_index = 0
+[11:40:26] INFO:Optimizer: Building Adam Optimizer (CNN LR = 0.0001, Decoder LR = 0.0002, Transformer LR = 2e-05)
+[11:40:26] INFO:Optimizer: Using StepLR Scheduler: Step Size = 5, Gamma = 0.5
+Epoch 1 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [31:30<00:00,  6.93s/it]
+Epoch 1 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:02<00:00,  1.77s/it]
+[12:12:58] INFO:Train: Epoch 1: Train Loss = 4.4231, Validation Loss = 3.9671
+[12:12:58] INFO:Train: Validation Loss improved from inf to 3.9671
+[12:12:58] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 2 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:53<00:00,  7.23s/it]
+Epoch 2 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:04<00:00,  1.84s/it]
+[12:46:56] INFO:Train: Epoch 2: Train Loss = 3.1058, Validation Loss = 3.3532
+[12:46:56] INFO:Train: Validation Loss improved from 3.9671 to 3.3532
+[12:46:56] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 3 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:17<00:00,  7.32s/it]
+Epoch 3 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.77s/it]
+[13:21:15] INFO:Train: Epoch 3: Train Loss = 2.5880, Validation Loss = 3.0984
+[13:21:15] INFO:Train: Validation Loss improved from 3.3532 to 3.0984
+[13:21:15] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 4 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:39<00:00,  7.18s/it]
+Epoch 4 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.75s/it]
+[13:54:56] INFO:Train: Epoch 4: Train Loss = 2.2957, Validation Loss = 2.9405
+[13:54:56] INFO:Train: Validation Loss improved from 3.0984 to 2.9405
+[13:54:56] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 5 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:28<00:00,  7.14s/it]
+Epoch 5 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[14:28:27] INFO:Train: Epoch 5: Train Loss = 2.0945, Validation Loss = 2.8364
+[14:28:27] INFO:Train: Validation Loss improved from 2.9405 to 2.8364
+[14:28:27] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 6 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:33<00:00,  7.37s/it]
+Epoch 6 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[15:03:02] INFO:Train: Epoch 6: Train Loss = 1.9365, Validation Loss = 2.8041
+[15:03:02] INFO:Train: Validation Loss improved from 2.8364 to 2.8041
+[15:03:02] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 7 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [34:32<00:00,  7.59s/it]
+Epoch 7 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.77s/it]
+[15:38:36] INFO:Train: Epoch 7: Train Loss = 1.8509, Validation Loss = 2.7734
+[15:38:36] INFO:Train: Validation Loss improved from 2.8041 to 2.7734
+[15:38:36] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 8 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:47<00:00,  7.43s/it]
+Epoch 8 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[16:13:26] INFO:Train: Epoch 8: Train Loss = 1.7799, Validation Loss = 2.7677
+[16:13:26] INFO:Train: Validation Loss improved from 2.7734 to 2.7677
+[16:13:26] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 9 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:25<00:00,  7.13s/it]
+Epoch 9 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.74s/it]
+[16:46:52] INFO:Train: Epoch 9: Train Loss = 1.7103, Validation Loss = 2.7643
+[16:46:52] INFO:Train: Validation Loss improved from 2.7677 to 2.7643
+[16:46:52] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 10 [Train]: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:09<00:00,  7.29s/it]
+Epoch 10 [Valid]: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.77s/it]
+[17:21:03] INFO:Train: Epoch 10: Train Loss = 1.6467, Validation Loss = 2.7433
+[17:21:03] INFO:Train: Validation Loss improved from 2.7643 to 2.7433
+[17:21:03] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_lstm_mobilenet.pt
+Epoch 11 [Train]: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:26<00:00,  7.35s/it]
+Epoch 11 [Valid]: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:02<00:00,  1.80s/it]
+[17:55:32] INFO:Train: Epoch 11: Train Loss = 1.5815, Validation Loss = 2.7486
+Epoch 12 [Train]: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [34:04<00:00,  7.49s/it]
+Epoch 12 [Valid]: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[18:30:39] INFO:Train: Epoch 12: Train Loss = 1.5454, Validation Loss = 2.7654
+Epoch 13 [Train]:  45%|██████████████████████████████████████████████████████▌                                                                  | 123/273 [14:31<17:45,  7.10s/it]^C^CException ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x102bf3ec0>
+Traceback (most recent call last):
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/.venv/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1663, in __del__
+    def __del__(self):
+
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/.venv/lib/python3.11/site-packages/torch/utils/data/_utils/signal_handling.py", line 73, in handler
+    _error_if_any_worker_fails()
+RuntimeError: DataLoader worker (pid 53259) is killed by signal: Interrupt: 2. 
+Epoch 13 [Train]:  45%|██████████████████████████████████████████████████████▌                                                                  | 123/273 [14:38<17:51,  7.14s/it]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/main.py", line 154, in <module>
+    
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/main.py", line 138, in main
+    LOGGER.info("Starting training...")
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/training/train.py", line 84, in trainModel
+    startTime = time.time()
+                       ^^^^^
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/training/train.py", line 35, in trainEpoch
+    optimizer.zero_grad()
+    ^^^^^^^^^^^^^^^
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/.venv/lib/python3.11/site-packages/torch/_tensor.py", line 647, in backward
+    torch.autograd.backward(
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/.venv/lib/python3.11/site-packages/torch/autograd/__init__.py", line 354, in backward
+    _engine_run_backward(
+  File "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/.venv/lib/python3.11/site-packages/torch/autograd/graph.py", line 829, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+
+

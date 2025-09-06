@@ -34,11 +34,12 @@ def tokenToCaption(tokens : List[int],
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-type", type=str, default="transformer", choices=["lstm", "transformer"])
+    parser.add_argument("--encoder-name", type=str, default="resnet18", choices=["resnet18", "mobilenet"])
     args = parser.parse_args()
 
-    decodedJsonPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTest.json")
+    decodedJsonPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}_{args.encoder_name}_DecodedTest.json")
     vocabJsonPath = os.path.join(OUTPUT_DIRECTORY, "vocab.json")
-    outputCaptionPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}DecodedTestCaptions.json")
+    outputCaptionPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}_{args.encoder_name}_DecodedTestCaptions.json")
 
     # Load the decoded tokens
     with open(decodedJsonPath, "r") as file:
