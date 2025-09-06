@@ -108,4 +108,20 @@ class LSTMDecoder(nn.Module):
         
         return outputs
 
-
+    def tokenOcclusion(self, features : torch.Tensor,
+                       caption : torch.Tensor,
+                       EOSIndex : int = 2):
+        """
+        For each token in the caption, mask it and measure the change in the EOS Logit
+        Returns a list of delta logits for each token position
+        """
+        baseLogits = self.forward(features, caption.unsqueeze(0))
+        baseEOSLogit = baseLogits[0, -1, EOSIndex].item()
+        deltas = []
+        for i in range(caption.size(0)):
+            occluded = caption.clone()
+            occluded[i] = self.embedding.padding_idx
+            logits = self.forward(features, occluded.unsqueeze(0))
+            EOSLogit = logits[0, -1, EOSIndex].item()
+            deltas.append(baseEOSLogit - EOSLogit)
+        return deltas

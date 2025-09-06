@@ -5,3 +5,4 @@
 **/.python-version
 **/*.zip
 **/checkpoints/
+**/logs/

@@ -414,3 +414,164 @@ Traceback (most recent call last):
 KeyboardInterrupt
 
 
+MOBILENET LSTM Metrics
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.evaluation.decoding --model-type lstm --encoder-name mobilenet 
+[22:23:22] INFO:Decoding Test: Loaded Vocaulary from path /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/vocab.json
+[22:23:22] INFO:Encoder: Initialized CNN Encoder with mobilenet,Finetune = True, Output Dimensions = 512
+[22:23:23] INFO:LSTM Decoder: Initialised LSTM Decoder with Vocabulary=2701, Embedding Dimension = 256, Hidden Dimensions = 512, Layers = 2
+[22:23:23] INFO:Captioner: Initialized Captioner with Encoder = mobilenet and Decoder = lstm
+[22:26:17] INFO:Decoding Test: Decoded Captions (Token Indices)
+[22:26:17] INFO:Decoding Test: Saved decoded token indices to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/lstm_mobilenet_DecodedTest.json
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.evaluation.getCaptions --model-type lstm --encoder-name mobilenet
+[22:26:53] INFO:Caption Decoding: Loaded Vocabulary from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/vocab.json
+[22:26:53] INFO:Caption Decoding: Saved the decoded captions to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/lstm_mobilenet_DecodedTestCaptions.json
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.evaluation.metrics --model-type lstm --encoder-name mobilenet
+[22:28:00] INFO:Metrics: No Missing Files. Can evaluate BLEU4 and METEOR metrics
+[22:28:03] INFO:Metrics: Saved Best and Worst Examples at /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/lstm_mobilenet_captions.json
+[22:28:03] INFO:Metrics: Saved Slices at /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/lstm_mobilenet_slices.json
+[22:28:04] INFO:Metrics: Saved per-slice BLEU-4 plot to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/lstm_mobilenet_slice_bleu.png
+[22:28:04] INFO:Metrics: BLEU-4 : 0.1696
+[22:28:04] INFO:Metrics: METEOR : 0.3719
+[22:28:04] INFO:Metrics: Mean Caption Lengths : 9.66 StdDev 2.06
+[22:28:04] INFO:Metrics: Degenerate Repitition (%) : 0.00
+
+
+MOBILENET TRANSFORMER TRAINING LOGS
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.main --model-type transformer --epochs 10 --finetune --encoder-name mobilenet
+[18:46:23] INFO:Main: Starting Image Captioning Training on RSICD Dataset
+[18:46:23] INFO:Main: Device: cpu
+[18:46:23] INFO:Main: Model Type: transformer
+[18:46:23] INFO:Main: Encoder: mobilenet
+[18:46:23] INFO:Main: Fine-tune Encoder: True
+[18:46:23] INFO:Main: Batch Size: 32
+[18:46:23] INFO:Main: Epochs: 10
+[18:46:23] INFO:Main: Loading vocabulary from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/vocab.json
+[18:46:23] INFO:Main: Loaded vocabulary with 2701 tokens
+[18:46:23] INFO:Main: Training dataset size: 8734
+[18:46:23] INFO:Main: Validation dataset size: 1094
+[18:46:23] INFO:Encoder: Initialized CNN Encoder with mobilenet,Finetune = True, Output Dimensions = 512
+[18:46:23] INFO:Transformer Decoder: Initialised Transformer Decoder with Vocab = 2701, d_model = 256, Layers = 2, Heads = 2
+[18:46:23] INFO:Captioner: Initialized Captioner with Encoder = mobilenet and Decoder = transformer
+[18:46:23] INFO:Main: Total parameters: 6,511,757
+[18:46:23] INFO:Main: Trainable parameters: 6,511,757
+[18:46:23] INFO:Main: Starting training...
+[18:46:23] INFO:Loss Function: Initialised CrossEntropyLoss with ignore_index = 0
+[18:46:23] INFO:Optimizer: Building Adam Optimizer (CNN LR = 0.0001, Decoder LR = 0.0002, Transformer LR = 2e-05)
+[18:46:23] INFO:Optimizer: Using StepLR Scheduler: Step Size = 5, Gamma = 0.5
+Epoch 1 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:53<00:00,  7.23s/it]
+Epoch 1 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.77s/it]
+[19:20:18] INFO:Train: Epoch 1: Train Loss = 3.5318, Validation Loss = 3.1212
+[19:20:18] INFO:Train: Validation Loss improved from inf to 3.1212
+[19:20:18] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 2 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [34:31<00:00,  7.59s/it]
+Epoch 2 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[19:55:51] INFO:Train: Epoch 2: Train Loss = 2.3109, Validation Loss = 2.9021
+[19:55:51] INFO:Train: Validation Loss improved from 3.1212 to 2.9021
+[19:55:51] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 3 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [34:23<00:00,  7.56s/it]
+Epoch 3 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.75s/it]
+[20:31:16] INFO:Train: Epoch 3: Train Loss = 2.0062, Validation Loss = 2.8022
+[20:31:16] INFO:Train: Validation Loss improved from 2.9021 to 2.8022
+[20:31:16] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 4 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:14<00:00,  7.31s/it]
+Epoch 4 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:03<00:00,  1.82s/it]
+[21:05:35] INFO:Train: Epoch 4: Train Loss = 1.8286, Validation Loss = 2.7768
+[21:05:35] INFO:Train: Validation Loss improved from 2.8022 to 2.7768
+[21:05:35] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 5 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [34:21<00:00,  7.55s/it]
+Epoch 5 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[21:40:58] INFO:Train: Epoch 5: Train Loss = 1.6974, Validation Loss = 2.7624
+[21:40:58] INFO:Train: Validation Loss improved from 2.7768 to 2.7624
+[21:40:58] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 6 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [33:23<00:00,  7.34s/it]
+Epoch 6 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:08<00:00,  1.95s/it]
+[22:15:30] INFO:Train: Epoch 6: Train Loss = 1.5531, Validation Loss = 2.7429
+[22:15:30] INFO:Train: Validation Loss improved from 2.7624 to 2.7429
+[22:15:30] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+Epoch 7 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [36:07<00:00,  7.94s/it]
+Epoch 7 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:12<00:00,  2.06s/it]
+[22:52:50] INFO:Train: Epoch 7: Train Loss = 1.4785, Validation Loss = 2.7775
+Epoch 8 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [36:15<00:00,  7.97s/it]
+Epoch 8 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.76s/it]
+[23:30:07] INFO:Train: Epoch 8: Train Loss = 1.4212, Validation Loss = 2.7754
+Epoch 9 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:16<00:00,  7.09s/it]
+Epoch 9 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.75s/it]
+[00:03:25] INFO:Train: Epoch 9: Train Loss = 1.3585, Validation Loss = 2.8087
+Epoch 10 [Train]: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [32:58<00:00,  7.25s/it]
+Epoch 10 [Valid]: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [01:01<00:00,  1.77s/it]
+[00:37:25] INFO:Train: Epoch 10: Train Loss = 1.3014, Validation Loss = 2.8890
+[00:37:25] INFO:Train: Training Time : 21061.84 seconds
+[00:37:25] INFO:Train: Memory Usage Increase: 413.23MB
+[00:37:25] INFO:Train: Peak Memory Usage at End: 777.53MB
+[00:37:25] INFO:Main: Training completed!
+[00:37:25] INFO:Main: Best model saved to: /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_mobilenet.pt
+
+
+TRANSFORMER RESNET18 TRAINING 
+
+(.venv) kshitijvaidya@Kshitijs-MacBook-Pro-2 Assignment1 % python -m imageCaptioning.main --model-type transformer --epochs 10 --finetune --encoder-name resnet18 
+[00:54:32] INFO:Main: Starting Image Captioning Training on RSICD Dataset
+[00:54:32] INFO:Main: Device: cpu
+[00:54:32] INFO:Main: Model Type: transformer
+[00:54:32] INFO:Main: Encoder: resnet18
+[00:54:32] INFO:Main: Fine-tune Encoder: True
+[00:54:32] INFO:Main: Batch Size: 32
+[00:54:32] INFO:Main: Epochs: 10
+[00:54:32] INFO:Main: Loading vocabulary from /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/outputs/vocab.json
+[00:54:32] INFO:Main: Loaded vocabulary with 2701 tokens
+[00:54:32] INFO:Main: Training dataset size: 8734
+[00:54:32] INFO:Main: Validation dataset size: 1094
+[00:54:32] INFO:Encoder: Initialized CNN Encoder with resnet18,Finetune = True, Output Dimensions = 512
+[00:54:32] INFO:Transformer Decoder: Initialised Transformer Decoder with Vocab = 2701, d_model = 256, Layers = 2, Heads = 2
+[00:54:32] INFO:Captioner: Initialized Captioner with Encoder = resnet18 and Decoder = transformer
+[00:54:32] INFO:Main: Total parameters: 15,071,181
+[00:54:32] INFO:Main: Trainable parameters: 15,071,181
+[00:54:32] INFO:Main: Starting training...
+[00:54:32] INFO:Loss Function: Initialised CrossEntropyLoss with ignore_index = 0
+[00:54:32] INFO:Optimizer: Building Adam Optimizer (CNN LR = 0.0001, Decoder LR = 0.0002, Transformer LR = 2e-05)
+[00:54:32] INFO:Optimizer: Using StepLR Scheduler: Step Size = 5, Gamma = 0.5
+Epoch 1 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:57<00:00,  2.19s/it]
+Epoch 1 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:49<00:00,  1.40s/it]
+[01:05:19] INFO:Train: Epoch 1: Train Loss = 3.5307, Validation Loss = 3.1156
+[01:05:19] INFO:Train: Validation Loss improved from inf to 3.1156
+[01:05:19] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_resnet18.pt
+Epoch 2 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:33<00:00,  2.10s/it]
+Epoch 2 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:49<00:00,  1.41s/it]
+[01:15:42] INFO:Train: Epoch 2: Train Loss = 2.3088, Validation Loss = 2.8723
+[01:15:42] INFO:Train: Validation Loss improved from 3.1156 to 2.8723
+[01:15:42] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_resnet18.pt
+Epoch 3 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:14<00:00,  2.03s/it]
+Epoch 3 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:50<00:00,  1.44s/it]
+[01:25:47] INFO:Train: Epoch 3: Train Loss = 1.9978, Validation Loss = 2.7999
+[01:25:47] INFO:Train: Validation Loss improved from 2.8723 to 2.7999
+[01:25:47] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_resnet18.pt
+Epoch 4 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [10:50<00:00,  2.38s/it]
+Epoch 4 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:48<00:00,  1.40s/it]
+[01:37:26] INFO:Train: Epoch 4: Train Loss = 1.7916, Validation Loss = 2.7811
+[01:37:26] INFO:Train: Validation Loss improved from 2.7999 to 2.7811
+[01:37:26] INFO:Utilities: Saving checkpoint to /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_resnet18.pt
+Epoch 5 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:08<00:00,  2.01s/it]
+Epoch 5 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:49<00:00,  1.40s/it]
+[01:47:24] INFO:Train: Epoch 5: Train Loss = 1.6271, Validation Loss = 2.8383
+Epoch 6 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [11:02<00:00,  2.43s/it]
+Epoch 6 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:54<00:00,  1.55s/it]
+[01:59:21] INFO:Train: Epoch 6: Train Loss = 1.4290, Validation Loss = 2.8500
+Epoch 7 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:43<00:00,  2.14s/it]
+Epoch 7 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:50<00:00,  1.46s/it]
+[02:09:55] INFO:Train: Epoch 7: Train Loss = 1.3130, Validation Loss = 2.9229
+Epoch 8 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:33<00:00,  2.10s/it]
+Epoch 8 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:51<00:00,  1.47s/it]
+[02:20:20] INFO:Train: Epoch 8: Train Loss = 1.2146, Validation Loss = 2.9939
+Epoch 9 [Train]: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:33<00:00,  2.10s/it]
+Epoch 9 [Valid]: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:50<00:00,  1.46s/it]
+[02:30:45] INFO:Train: Epoch 9: Train Loss = 1.1258, Validation Loss = 3.1051
+Epoch 10 [Train]: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 273/273 [09:31<00:00,  2.10s/it]
+Epoch 10 [Valid]: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:51<00:00,  1.46s/it]
+[02:41:08] INFO:Train: Epoch 10: Train Loss = 1.0496, Validation Loss = 3.1637
+[02:41:08] INFO:Train: Training Time : 6395.75 seconds
+[02:41:08] INFO:Train: Memory Usage Increase: -170.83MB
+[02:41:08] INFO:Train: Peak Memory Usage at End: 251.48MB
+[02:41:08] INFO:Main: Training completed!
+[02:41:08] INFO:Main: Best model saved to: /Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/checkpoints/model_transformer_resnet18.pt

@@ -1,0 +1,122 @@
+[
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/park_58.jpg",
+    "caption": "many buildings are around a park with many green trees and a pond",
+    "bleu": 0.912167909070388,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/park_48.jpg",
+    "caption": "many buildings are around a park with many green trees and a pond",
+    "bleu": 0.9306048591020996,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/parking_55.jpg",
+    "caption": "many cars are parked in a parking lot",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/sparseresidential_70.jpg",
+    "caption": "a building with a swimming pool is surrounded by many green trees",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/meadow_59.jpg",
+    "caption": "several green trees are near a piece of green meadow",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_58.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_71.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_6.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/meadow_55.jpg",
+    "caption": "several green trees are near a piece of green meadow",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/viaduct_5.jpg",
+    "caption": "many green trees are close to a viaduct",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/commercial_60.jpg",
+    "caption": "many buildings are located in an industrial area",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/airport_349.jpg",
+    "caption": "several buildings are near a road with a parking lot",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/00707.jpg",
+    "caption": "the playground is located in the middle of the square",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/square_41.jpg",
+    "caption": "a church is close to a road",
+    "bleu": 0.013732428802850668,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/stadium_70.jpg",
+    "caption": "a large building is close to a road",
+    "bleu": 0.013846692617688864,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/resort_69.jpg",
+    "caption": "many green trees are around a building with a building",
+    "bleu": 0.016473675090573986,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/river_49.jpg",
+    "caption": "a river flows through a large area",
+    "bleu": 0.018072892682152068,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/center_70.jpg",
+    "caption": "some buildings are around a square with green trees",
+    "bleu": 0.018502955667862944,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/river_54.jpg",
+    "caption": "many buildings are near a park with many green trees and a pond",
+    "bleu": 0.018724372764461875,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/mediumresidential_68.jpg",
+    "caption": "some buildings and many green trees are located in an average residential area",
+    "bleu": 0.018724372764461875,
+    "type": "failure"
+  }
+]

@@ -43,6 +43,18 @@ class CNNEncoder(nn.Module):
         for layer in parameters[-numLayers:]:
             for param in layer.parameters():
                 param.requires_grad = finetune
+        
+        self.activations = None
+        self.gradients = None
+        self.lastConv = None
+        for m in self.CNN.modules():
+            if isinstance(m, nn.Conv2d):
+                self.lastConv = m
+        
+        if self.lastConv is not None:
+            self.lastConv.register_forward_hook(self.saveActivation)
+            self.lastConv.register_full_backward_hook(self.saveGradient)
+
         LOGGER.info(f"Initialized CNN Encoder with {modelName},"
                     f"Finetune = {finetune}, Output Dimensions = {outputDim}")
     
@@ -78,3 +90,21 @@ class CNNEncoder(nn.Module):
         Load the cached features from a .pt file
         """
         return torch.load(loadPath)
+    
+    def saveActivation(self, module : nn.Module,
+                       input : torch.Tensor,
+                       output : torch.Tensor):
+        self.activations = output.detach()
+    
+    def saveGradient(self, module : nn.Module,
+                     inputGrad : torch.Tensor,
+                     outputGrad : torch.Tensor):
+        self.gradients = outputGrad[0].detach()
+    
+    def getGradCAM(self):
+        weights = self.gradients.mean(dim=(2, 3), keepdim=True)
+        CAM = (weights * self.activations).sum(dim=1, keepdim=True)
+        CAM = torch.relu(CAM)
+        CAM = CAM.squeeze().cpu().numpy()
+        CAM = (CAM - CAM.min()) / (CAM.max() - CAM.min() + 1e-8)
+        return CAM

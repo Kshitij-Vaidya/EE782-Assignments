@@ -25,6 +25,8 @@ class TransformerDecoder(nn.Module):
         self.fc = nn.Linear(dModel, vocabSize)
         # Image Projection : Convert feature into memory tokens
         self.imageProjection = nn.Linear(encoderDim, dModel)
+        self.attentionWeights = None
+        self.decoder.layers[-1].register_forward_hook(self.attentionHook)
 
         LOGGER.info(f"Initialised Transformer Decoder with Vocab = {vocabSize}, "
                     f"d_model = {dModel}, Layers = {numLayers}, Heads = {numHeads}")
@@ -76,3 +78,14 @@ class TransformerDecoder(nn.Module):
             generated = torch.cat([generated, nextTokens.unsqueeze(1)], dim=1)
         
         return predictions
+    
+    def attentionHook(self, module :  nn.Module,
+                      input : torch.Tensor,
+                      output : torch.Tensor):
+        if isinstance(output, tuple) and len(output) > 1:
+            self.attentionWeights = output[1].detach().cpu()
+        else:
+            self.attentionWeights = None
+        
+    def getLastAttentionMap(self):
+        return self.attentionWeights

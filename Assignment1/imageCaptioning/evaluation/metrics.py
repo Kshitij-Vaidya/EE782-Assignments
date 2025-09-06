@@ -5,7 +5,6 @@ from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
 import argparse
 import numpy as np 
-from collections import defaultdict
 import matplotlib.pyplot as plt 
 
 from imageCaptioning.config import getCustomLogger, DATA_ROOT, OUTPUT_DIRECTORY, tokenize
@@ -71,7 +70,7 @@ def selectExamples(filePaths : List[str],
 def getErrorSlices(gtCaptions : List[List[str]],
                    filepaths : List[str],
                    model : str,
-                   encoder : str) -> None:
+                   encoder : str):
     slices = {"short" : [],
               "long" : [],
               "runway" : [],
@@ -94,6 +93,27 @@ def getErrorSlices(gtCaptions : List[List[str]],
     with open(path, "w") as file:
         json.dump(slices, file, indent=2)
     LOGGER.info(f"Saved Slices at {path}")
+    return slices
+
+def plotSliceBLEUDeltas(sliceDict : dict,
+                        BLEUMap : dict,
+                        model : str,
+                        encoder : str) -> None:
+    sliceNames, sliceBleus = [], []
+    for name, files in sliceDict.items():
+        scores = [BLEUMap.get(path, 0.0) for path in files]
+        if scores:
+            sliceNames.append(name)
+            sliceBleus.append(np.mean(scores))
+    plt.figure(figsize=(8, 5))
+    plt.bar(sliceNames, sliceBleus)
+    plt.ylabel("Mean Per-Slice BLEU-4")
+    plt.title(f"Per-slice BLEU-4 Scores ({model}, {encoder})")
+    plt.tight_layout()
+    outputPath = os.path.join(OUTPUT_DIRECTORY, f"{model}_{encoder}_slice_bleu.png")
+    plt.savefig(outputPath)
+    plt.close()
+    LOGGER.info(f"Saved per-slice BLEU-4 plot to {outputPath}")
 
 
 if __name__ == "__main__":
@@ -147,10 +167,18 @@ if __name__ == "__main__":
     for file in decodedCaptions["imageFiles"]:
         filename = os.path.basename(file)
         gtCaptions.append(referenceMap.get(filename, [""]))
-    getErrorSlices(gtCaptions,
+    slices = getErrorSlices(gtCaptions,
                    decodedCaptions["imageFiles"],
                    args.model_type,
                    args.encoder_name)
+    
+    bleuMap = {
+        path : bleu for path, bleu in zip(decodedCaptions["imageFiles"], allBLEU)
+    }
+    plotSliceBLEUDeltas(slices,
+                        bleuMap,
+                        args.model_type,
+                        args.encoder_name)
     
     LOGGER.info(f"BLEU-4 : {BLEU4:.4f}")
     LOGGER.info(f"METEOR : {METEOR:.4f}")

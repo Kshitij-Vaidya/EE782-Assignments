@@ -5,6 +5,9 @@ import os
 from torchvision import transforms
 import json
 import argparse
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
 from imageCaptioning.models.captioner import Captioner
 from imageCaptioning.data.vocabulary import Vocabulary
@@ -60,6 +63,33 @@ def greedyDecodeTransformer(model : Captioner,
                                        EOSIndex=EOSIndex,
                                        BOSIndex=BOSIndex)
 
+def gradCAM(model : Captioner,
+            imageTensor : torch.Tensor,
+            captionTensor : torch.Tensor,
+            index : int,
+            EOSIndex : int = 2):
+    model.eval()
+    imageTensor = imageTensor.unsqueeze(0)
+    captionTensor = captionTensor.unsqueeze(0)
+    # Forward Pass
+    output = model(imageTensor, captionTensor)
+    EOSLogit = output[0, -1, EOSIndex]
+    # Zero gradients and Backward on the EOS Logit
+    model.zero_grad()
+    EOSLogit.backward(retain_graph=True)
+    CAM = model.encoder.getGradCAM()
+    imageNumpy = imageTensor.squeeze().permute(1, 2, 0).cpu().numpy()
+    imageNumpy = (imageNumpy - imageNumpy.min()) / (imageNumpy.max() - imageNumpy.min())
+    CAMResized = cv2.resize(CAM, (imageNumpy.shape[1], imageNumpy.shape[0]))
+    heatmap = cv2.applyColorMap(np.uint8(255 * CAMResized), cv2.COLORMAP_JET)
+    overlay = cv2.addWeighted(np.uint8(255 * imageNumpy), 0.5, heatmap, 0.5, 0)
+
+    plt.figure(figsize=(8, 5))
+    plt.imshow(overlay)
+    plt.axis('off')
+    plt.title("Grad-CAM Overlay")
+    plt.savefig(os.path.join(OUTPUT_DIRECTORY, f"gradCAM{index}.png"))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Decoding Script using Checkpointed Model")
@@ -90,7 +120,7 @@ if __name__ == "__main__":
     model = Captioner(vocabSize=vocabSize,
                       modelType=args.model_type,
                       encoderName=args.encoder_name)
-    model.load_state_dict(checkpoint["modelState"])
+    model.load_state_dict(checkpoint["modelState"], strict=False)
     model = model.to(DEVICE)
     model.eval()
 
@@ -105,3 +135,48 @@ if __name__ == "__main__":
             "decodedTokens" : decoded
         }, file, indent=2)
     LOGGER.info(f"Saved decoded token indices to {outputPath}")
+
+    # for i in range(9):
+    #     testImage = imageTensor[i]
+    #     testCaption = torch.tensor(decoded[i])
+    #     gradCAM(model,
+    #             testImage,
+    #             testCaption, i)
+    
+    if args.model_type == "lstm":
+        allDeltas = []
+        for i in range(len(imageTensor)):
+            testImage = imageTensor[i]
+            features = model.encoder(testImage.unsqueeze(0))
+            testCaption = torch.tensor(decoded[i])
+            deltas = model.decoder.tokenOcclusion(features, testCaption)
+            allDeltas.append(deltas)
+        LOGGER.info(f"Token Occlusion Deltas Collected")
+        # Pad Deltas to the same length for plotting
+        maxLen = max(len(delta) for delta in allDeltas)
+        allDeltas = [delta + [np.nan] * (maxLen - len(delta)) for delta in allDeltas]
+        allDeltas = np.array(allDeltas)
+        meanDeltas = np.nanmean(allDeltas, axis = 0)
+        stdDeltas = np.nanstd(allDeltas, axis = 0)
+        plt.figure(figsize=(10, 6))
+        plt.errorbar(range(1, maxLen + 1), meanDeltas, yerr=stdDeltas, fmt='-o', capsize=4)
+        plt.xlabel("Token Position in Caption")
+        plt.ylabel("Mean Occlusion Delta (± std)")
+        plt.title("Token Occlusion Deltas Across Test Samples")
+        plt.tight_layout()
+        plotPath = os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}_{args.encoder_name}_occlusionDeltas.png")
+        plt.savefig(plotPath)
+        plt.close()
+        LOGGER.info(f"Saved occlusion delta plot to {plotPath}")
+    
+    if args.model_type == "transformer":
+        testImage = imageTensor[0]
+        testCaption = torch.tensor(decoded[0])
+        output = model(testImage.unsqueeze(0),
+                       testCaption.unsqueeze(0))
+        attentionMap = model.decoder.getLastAttentionMap()
+        if attentionMap is not None:
+            plt.imshow(attentionMap.mean(dim = 0), cmap="viridis")
+            plt.title("Average Last-Layer Attention Layer")
+            plt.colorbar()
+            plt.savefig(os.path.join(OUTPUT_DIRECTORY, f"{args.model_type}_{args.encoder_name}_AttentionMap.png"))

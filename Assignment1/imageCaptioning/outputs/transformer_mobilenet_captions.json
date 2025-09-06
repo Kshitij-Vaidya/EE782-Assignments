@@ -1,0 +1,122 @@
+[
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/parking_60.jpg",
+    "caption": "many cars are parked in a parking lot",
+    "bleu": 0.8824969025845955,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_72.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 0.8948393168143697,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/sparseresidential_56.jpg",
+    "caption": "a building with a swimming pool is surrounded by many green trees",
+    "bleu": 0.9200444146293233,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/park_48.jpg",
+    "caption": "many buildings are around a park with many green trees and a pond",
+    "bleu": 0.9306048591020996,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/sparseresidential_70.jpg",
+    "caption": "a building with a swimming pool is surrounded by many green trees",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_59.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_73.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_57.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/forest_54.jpg",
+    "caption": "many green trees are in a piece of forest",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/parking_380.jpg",
+    "caption": "many cars are parked in a parking lot",
+    "bleu": 1.0,
+    "type": "success"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/bareland_69.jpg",
+    "caption": "a piece of naked dirt",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/00631.jpg",
+    "caption": "the playground is located in the middle of the playground",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/storagetanks_60.jpg",
+    "caption": "some green trees are around a white building with a swimming pool",
+    "bleu": 0,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/square_41.jpg",
+    "caption": "some buildings are around a church",
+    "bleu": 0.016555784380495767,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/airport_349.jpg",
+    "caption": "a football field is close to a few green trees and a road",
+    "bleu": 0.018724372764461875,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/stadium_59.jpg",
+    "caption": "the bird nest stage is surrounded by vegetation regularly",
+    "bleu": 0.019621202589476826,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/stadium_47.jpg",
+    "caption": "the bird nest stage is surrounded by vegetation regularly",
+    "bleu": 0.019621202589476826,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/mediumresidential_64.jpg",
+    "caption": "some green buildings and trees are located in an average residential area",
+    "bleu": 0.020044994979069072,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/river_54.jpg",
+    "caption": "many buildings and some green trees are located in an industrial area",
+    "bleu": 0.020044994979069072,
+    "type": "failure"
+  },
+  {
+    "filepath": "/Users/kshitijvaidya/EE782-AdvancedTopicsInML/Assignment1/imageCaptioning/rsicdDataset/images/test/mediumresidential_68.jpg",
+    "caption": "some green buildings and trees are located in an average residential area",
+    "bleu": 0.020044994979069072,
+    "type": "failure"
+  }
+]
