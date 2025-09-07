@@ -41,6 +41,6 @@ for entry in data:
     draw.text((10, height + 10), f"GT: {ground_truth}", fill=(0, 128, 0), font=font)
     draw.text((10, height + 40), f"Caption: {caption}", fill=(0, 0, 0), font=font)
     # Save image
-    out_path = os.path.join(output_dir, os.path.basename(img_path).replace(".jpg", "_captioned.png"))
+    out_path = os.path.join(output_dir, os.path.basename(img_path).replace(".jpg", f"_captioned.png"))
     new_img.save(out_path)
     print(f"Saved: {out_path}")
