@@ -1,0 +1,12 @@
+# Define Paths for all directories and data sources
+paths:
+  dataDir : "data"
+  facesDir : "data/trustedFaces"
+  encodingFilePath : "data/trustedFaces.pkl"
+  tempAudioPath : "data/response.mp3"
+
+# Store basic activation and deactivation commands to be used by the Guard Agent
+commands:
+  activationCommand : "guard my room"
+  deactivationCommand : "stand down"
+
