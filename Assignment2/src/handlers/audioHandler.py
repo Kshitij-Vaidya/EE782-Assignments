@@ -8,7 +8,7 @@ from pathlib import Path
 LOGGER = logging.getLogger(__name__)
 
 def speak(text : str,
-          tempFile : Path):
+          tempFile : Path = "data/response.mp3"):
     """
     Converts the text to speech and plays it.
     """
