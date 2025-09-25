@@ -7,7 +7,7 @@ from pathlib import Path
 LOGGER = logging.getLogger(__name__)
 
 # Define the global guard mode variable state that will be used across the module
-GUARD_MODE_ACTIVE : bool = False
+GUARD_MODE_ACTIVE: bool = False
 
 def setupLogging(logDir : str = "logs",
                  logLevel : int = logging.INFO) -> None:

@@ -31,6 +31,7 @@ def handleIntruder(llmModel : GenerativeModel) -> None:
 
 
 def monitorRoom(knownFaceData : Dict[str, Any],
+                llmModel : GenerativeModel,
                 tolerance : float = 0.5) -> None:
     """
     Activates the webcam and performs facial recognition
@@ -57,7 +58,7 @@ def monitorRoom(knownFaceData : Dict[str, Any],
                 LOGGER.info(f"Trusted Person : {name}")
             else:
                 # Handle the intruder
-                handleIntruder()
+                handleIntruder(llmModel)
                 return
         cv2.imshow('Video', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):

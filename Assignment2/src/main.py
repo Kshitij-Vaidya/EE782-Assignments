@@ -1,6 +1,11 @@
 import logging
+import os
 
 from pathlib import Path
+from google.generativeai import GenerativeModel
+import google.generativeai as genai
+from dotenv import load_dotenv
+load_dotenv()
 
 from src.handlers.facesHandler import enrollTrustedFaces, loadEnrolledFaces
 from src.handlers.audioHandler import listenForAudio, speak
@@ -9,11 +14,20 @@ from src.utils import setupLogging, loadConfig, GUARD_MODE_ACTIVE
 
 LOGGER = logging.getLogger(__name__)
 
+APIKEY = os.getenv("GEMINI_API_KEY")
+MODEL = os.getenv("MODEL")
+
 def main():
     """
     Main function to run the guard agent
     """
+    global GUARD_MODE_ACTIVE
     setupLogging()
+    # Ensure that the API Key is present and loaded
+    if not APIKEY:
+        LOGGER.error("API Key is not present. Add to the `.env` file")
+    genai.configure(api_key=APIKEY)
+    llmModel = GenerativeModel(MODEL)
     # Load the configuration 
     config = loadConfig()
     encodingFilePath = Path(config['paths']['encodingFilePath'])
@@ -38,7 +52,7 @@ def main():
             GUARD_MODE_ACTIVE = True
             LOGGER.info("Guard Mode Active. Monitoring the Room.")
             speak("Guard Mode Active. Monitoring the Room.")
-            monitorRoom(knownFaces)
+            monitorRoom(llmModel, knownFaces)
             LOGGER.info("Guard Mode Deactivated.")
             speak("Guard Mode Deactivated")
         
