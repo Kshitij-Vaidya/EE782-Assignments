@@ -6,7 +6,7 @@ from typing import Dict, Any, List
 from google.generativeai import GenerativeModel
 
 from src.handlers.audioHandler import speak, listenForAudio
-from src.utils import GUARD_MODE_ACTIVE
+import src.utils as utils
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ def monitorRoom(knownFaceData : Dict[str, Any],
     """
     videoCapture = cv2.VideoCapture(0)
 
-    while GUARD_MODE_ACTIVE:
+    while utils.GUARD_MODE_ACTIVE:
         ret, frame = videoCapture.read()
         if not ret:
             break

@@ -7,6 +7,6 @@ paths:
 
 # Store basic activation and deactivation commands to be used by the Guard Agent
 commands:
-  activationCommand : "guard my room"
-  deactivationCommand : "stand down"
+  activationCommand : ["guard my room", "guard"]
+  deactivationCommand : ["stand down", "down"]
 

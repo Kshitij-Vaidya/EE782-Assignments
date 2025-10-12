@@ -10,7 +10,8 @@ load_dotenv()
 from src.handlers.facesHandler import enrollTrustedFaces, loadEnrolledFaces
 from src.handlers.audioHandler import listenForAudio, speak
 from src.handlers.guardHandler import monitorRoom
-from src.utils import setupLogging, loadConfig, GUARD_MODE_ACTIVE
+from src.utils import setupLogging, loadConfig
+import src.utils as utils
 
 LOGGER = logging.getLogger(__name__)
 
@@ -48,16 +49,20 @@ def main():
         if not command:
             continue
 
-        if commands['activationCommand'] in command and not GUARD_MODE_ACTIVE:
-            GUARD_MODE_ACTIVE = True
+        if any(actCom in command for actCom in commands['activationCommand']) and not utils.GUARD_MODE_ACTIVE:
+            utils.GUARD_MODE_ACTIVE = True
             LOGGER.info("Guard Mode Active. Monitoring the Room.")
             speak("Guard Mode Active. Monitoring the Room.")
-            monitorRoom(llmModel, knownFaces)
-            LOGGER.info("Guard Mode Deactivated.")
-            speak("Guard Mode Deactivated")
+            # TODO : Modify the logic to ensure continuous monitoring of the room 
+            # And listening for audio commands if needed    
+            monitorRoom(knownFaces, llmModel)
+
+            if not utils.GUARD_MODE_ACTIVE:
+                LOGGER.info("Guard Mode Deactivated.")
+                speak("Guard Mode Deactivated")
         
-        elif commands['deactivationCommand'] in command and GUARD_MODE_ACTIVE:
-            GUARD_MODE_ACTIVE = False
+        elif any(deactCom in command for deactCom in commands['deactivationCommand']) and utils.GUARD_MODE_ACTIVE:
+            utils.GUARD_MODE_ACTIVE = False
             LOGGER.info("Guard Mode deactivated after receiving command")
         
         elif 'stop' in command:
